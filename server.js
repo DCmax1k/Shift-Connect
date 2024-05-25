@@ -96,8 +96,8 @@ app.get('/sitemap.xml', async (req, res) => {
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log('Connected to MongoDB');
-    app.listen(process.env.PORT || 3001, () => {
-        console.log('Serving on port 3001...');
+    app.listen(process.env.PORT || 3006, () => {
+        console.log('Serving on port 3006...');
     });
 });
 
