@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap'); /* font-family: "Inter", sans-serif; */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.App {
+    background-color: white;
+    font-family: "Inter", sans-serif;
+}
+
+.Dashboard {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background-color: #051923;
+}
+.Dashboard.true {
+    opacity: 1;
+}
