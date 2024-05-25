@@ -10,7 +10,7 @@ async function sendEmail(to, subject, message) {
     });
 
     const mailOptions = {
-        from: 'noreply@keypassguard.com', // sender address
+        from: 'noreply@digitalcaldwell.com', // sender address
         to, // list of receivers
         subject, // Subject line
         html: 
@@ -18,7 +18,7 @@ async function sendEmail(to, subject, message) {
         <body>
         <div>
             <center style="background-color: #0B3246; padding: 20px 30px; border-radius: 10px; width: fit-content; ">
-                <img src="cid:logo" style="width: 280px;" alt="Keypass Guard" />
+                <img src="cid:logo" style="width: 100px;" alt="Keypass Guard" />
             </center>
             <div style="font-size: 18px;">
                 <br />
@@ -48,12 +48,12 @@ async function sendEmail(to, subject, message) {
 
 // WELCOME EMAIL TEMPLATE
 async function sendWelcomeEmail(to, username, verifyLink) {
-    await sendEmail(to, 'Welcome to Keypass Guard', 
+    await sendEmail(to, 'Welcome to Shift Connect', 
     `
             Hi ${username}!
             <br />
             <br />
-            Welcome to Keypass Guard! We're delighted you've chosen us to securely retain your passwords and enhance your online security.
+            Welcome to Shift Connect!
             <br />
             <br />
             To get started, please take a moment to verify your email address by clicking on the following link:
@@ -62,13 +62,14 @@ async function sendWelcomeEmail(to, username, verifyLink) {
             <a href="${verifyLink}" style="cursor: pointer; pointer-events: none; margin: 20px 20px; padding: 10px 30px; border-radius: 6px; background-color: #0582CA; text-decoration: none; color: white; ">Verify Email</a>
             <br />
             <br />
-            This ensures that your Keypass Guard account is fully activated, and you can start enjoying the benefits of our secure password management.
+            This ensures that your Shift Connect account is fully secured.
             <br />
             <br />
-            At Keypass Guard, we prioritize the privacy and security of your data. Our commitment is to provide you with a seamless and reliable platform to manage your passwords with confidence.
+            At Shift Connect, we prioritize the privacy and security of your data. Our commitment is to provide you with a seamless and reliable platform to manage your passwords with confidence.
             <br />
             <br />
-            The Keypass Guard Team
+            The Shift Connect Team
+            help@digitalcaldwell.com
     `);
     console.log("Email sent.");
 }
@@ -96,7 +97,8 @@ async function sendVerifyNewEmail(to, username, verifyLink) {
             <br />
             Best regards,
             <br />
-            The Keypass Guard Team
+            The Shift Connect Team
+            help@digitalcaldwell.com
     `);
     console.log("Email sent.");
 }
@@ -117,7 +119,8 @@ async function send2fa(to, username, code) {
             Please enter this code in the designated field to access your account. If you have any questions or concerns, please don't hesitate to reach out to us.
             <br />
             <br />
-            The Keypass Guard Team
+            The Shift Connect Team
+            help@digitalcaldwell.com
     `);
     console.log("Email sent.");
 }

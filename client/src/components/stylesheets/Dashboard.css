@@ -1,0 +1,73 @@
+.Dashboard {
+    min-height: 100vh;
+    width: 100vw;
+    background-color: #282828;
+    padding: 2vh;
+}
+
+.Dashboard {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.Dashboard.true {
+    opacity: 1;
+}
+
+.Loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    color: white;
+    font-size: 2vh;
+
+    transition: opacity 0.3s ease;
+
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: #282828;
+}
+.Loading > img {
+    height: 2vh;
+    width: 2vh;
+    margin-right: 20px;
+    animation: spin 1s linear infinite;
+}
+.Loading.fadeOut {
+    opacity: 0;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+.middle {
+    width: 100%;
+    margin-top: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+}
+.middle > .btn {
+    height: 8vh;
+    width: 30vh;
+    background-color: #393939;
+    border-radius: 2vh;
+    margin: 3vh;
+    font-size: 2.5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 900;
+    cursor: pointer;
+}   

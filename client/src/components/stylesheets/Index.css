@@ -12,7 +12,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 1;
 }
 .Index > .title > img {
     height: 10vh;
@@ -104,6 +103,7 @@
 .links > .link.login {
     background-color: #5781C0;
     margin-left: 1vh;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 440px) {
@@ -114,4 +114,53 @@
         padding: 1vh 2vh;
         border-radius: 1.3vh;
     }
+}
+
+.sideBar {
+    position: fixed;
+    height: 100vh;
+    width: 60vh;
+    background-color: rgb(30, 30, 30);
+    left: -60vh;
+    top: 0;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+.sideBar.true {
+    transform: translateX(100%);
+}
+
+/* Login */
+.Switch {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+.Switch > .slide {
+    width: 200%;
+    height: 100%;
+    transform: translateX(0);
+    display: flex;
+    color: white;
+
+
+    transition: transform 0.3s ease;
+}
+.Switch > .slide.false {
+    transform: translateX(-50%);
+}
+
+.Login {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15vh;
+}
+.Login > .hr {
+    margin: 4vh 0;
+}
+.Login > h1 {
+    font-size: 3vh;
 }

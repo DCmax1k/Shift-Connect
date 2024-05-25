@@ -23,6 +23,12 @@ app.get('/', (req, res) => {
 app.get('/dashboard', (req, res) => {
     res.sendFile(__dirname + '/client/build/index.html');
 });
+app.get('/login', (req, res) => {
+    res.redirect('/');
+});
+app.get('/signup', (req, res) => {
+    res.redirect('/');
+});
 
 // DB models
 const User = require('./models/User');
@@ -30,6 +36,9 @@ const User = require('./models/User');
 // Routes
 const dashboardRoute = require('./routes/dashboard');
 app.use('/dashboard', dashboardRoute);
+
+const loginRoute = require('./routes/login');
+app.use('/login', loginRoute);
 
 
 
@@ -41,6 +50,9 @@ app.post('/auth', authToken, async (req, res) => {
             return res.json({status: 'error', message: 'Bad authentication! Redirecting...'})
         };
 
+        // Hide crucial information to not send client
+        user.password = '';
+        
         res.json({
             status: 'success',
             user,
