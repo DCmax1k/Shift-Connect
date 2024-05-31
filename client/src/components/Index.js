@@ -101,8 +101,8 @@ class Index extends Component {
                 {/* Title Logo */}
                 <div className='title'>
                     <img alt='logo' src='/images/logoNoBg.svg' />
-                    <h1>Shift</h1>
-                    <h3>connect</h3>
+                    <h1>Crew</h1>
+                    <h3>Boost Team Productivity</h3>
                 </div>
 
                 {/* Side bar */}

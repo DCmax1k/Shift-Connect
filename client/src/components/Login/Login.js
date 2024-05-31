@@ -59,7 +59,7 @@ class Login extends Component {
                 <h1>Log in</h1>
                 <div className='hr' style={{width: "calc(100px + 40%)"}}></div>
                 <Input onInput={this.changeUsername} className="indexLogin" placeholder={"Email"} type="text" />
-                <Input onInput={this.changePassword} className="indexLogin" placeholder={"Password"} type="password" />
+                <Input onInput={this.changePassword} className="indexLogin" placeholder={"Password"} type="password" enter={this.submitData} />
                 <div onClick={this.submitData} className='btn' style={{backgroundColor: "#DFDFDF", color: "#222222"}}>{this.state.loginBtnText}</div>
                 <div style={{marginTop: "3vh", fontSize: "1.7vh"}}>Forgot Passoword?</div>
                 <div style={{marginTop: "3vh", marginBottom: 5, fontSize: "1.7vh"}}>Don't have an account yet?</div>

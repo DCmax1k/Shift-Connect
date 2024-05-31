@@ -20,11 +20,12 @@
     color: #5781C0;
     font-size: 20vh;
     text-shadow: 1.3vh 0.7vh 0.4vh #263957;
-    margin-bottom: -3vh;
+    margin-bottom: 0vh;
 }
 .Index > .title > h3 {
     color: white;
-    font-size: 11vh;
+    font-size: 3.7vh;
+    transform: translateX(1vh);
 }
 
 .Index > .display {
@@ -53,6 +54,7 @@
     }
     .Index > .display {
         left: 50%;
+        bottom: -15vh;
         transform: translateX(-50%);
         height: 58vh;
     }
@@ -60,7 +62,7 @@
         font-size: 15vh;
     }
     .Index > .title > h3 {
-        font-size: 8vh;
+        font-size: 3vh;
     }
     .Index > .title > img {
         height: 7vh;
@@ -77,7 +79,8 @@
         font-size: 12vh;
     }
     .Index > .title > h3 {
-        font-size: 6vh;
+        font-size: 2.5vh;
+        transform: translateX(1vh);
     }
 }
 
@@ -119,15 +122,22 @@
 .sideBar {
     position: fixed;
     height: 100vh;
-    width: 60vh;
+    width: 600px;
     background-color: rgb(30, 30, 30);
-    left: -60vh;
+    right: 100vw;
     top: 0;
     transform: translateX(0);
     transition: transform 0.3s ease;
+    z-index: 10;
 }
 .sideBar.true {
     transform: translateX(100%);
+}
+
+@media screen and (max-width: 600px) {
+    .sideBar {
+        width: 100vw;
+    }
 }
 
 /* Login */
@@ -135,6 +145,7 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    z-index: 1;
 }
 .Switch > .slide {
     width: 200%;
