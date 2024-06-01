@@ -128,10 +128,19 @@
     top: 0;
     transform: translateX(0);
     transition: transform 0.3s ease;
-    z-index: 10;
+    z-index: 2;
+}
+.sideBar.right {
+    left: 100vw;
 }
 .sideBar.true {
     transform: translateX(100%);
+}
+.sideBar.right.true {
+    transform: translateX(-100%);
+}
+.sideBar.user {
+    background-color: #353535;
 }
 
 @media screen and (max-width: 600px) {

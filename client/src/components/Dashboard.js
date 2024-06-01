@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import sendData from './util/sendData';
 import Loading from './Loading';
 import Dropdown from './widgets/Dropdown';
+import Input from './Login/Input';
 
 
 const user = {
 	_id: 3409233,
-	firstname: 'Dylan',
-	lastname: 'Caldwell',
+	fullname: 'Dylan',
 	username: 'DCmax1k',
 	password: 'password1234',
 	//organizations: [ {id: 23234, title: 'Walmart', }, {id: 234234, title: 'Pulp', }, {id: 234534, title: 'Pine Tree Corner LLC', }, ],
@@ -24,6 +24,16 @@ class Dashboard extends Component {
             loadingText: 'Logging in...',
             fadeIn: false,
             alerts: [],
+
+            createOrgName: '',
+            createOrgOpen: false,
+            joinOrgOpen: false,
+            chips: [],
+
+            organization: {},
+
+            orgSideBar: false,
+            userSideBar: false,
         };
         this.loadingRef = React.createRef();
 
@@ -33,17 +43,24 @@ class Dashboard extends Component {
         this.selectOrganization = this.selectOrganization.bind(this);
         this.joinOrg = this.joinOrg.bind(this);
         this.createOrg = this.createOrg.bind(this);
+        this.changeCreateOrgName = this.changeCreateOrgName.bind(this);
+        this.addChip = this.addChip.bind(this);
+        this.submitCreateOrg = this.submitCreateOrg.bind(this);
+        this.toggleUserSidebar = this.toggleUserSidebar.bind(this);
+        this.toggleOrgSidebar = this.toggleOrgSidebar.bind(this);
+        
 
     }
 
     async componentDidMount() {
         try {
             const checkLogin = await sendData('/auth', {});
-            //const checkLogin = {user, status: 'success'};
+            //const checkLogin = {user, status: 'success', organization: user.organizations[0]};
             if (checkLogin.status === 'success') {
-                const user = checkLogin.user;
+                const { user, organization } = checkLogin;
                 this.setState({
                     user,
+                    organization,
                     loadingText: 'Welcome back, ' + user.fullname + '!',
                 });
                 setTimeout(() => {
@@ -59,6 +76,12 @@ class Dashboard extends Component {
                         }, 1);
                     }, 300);
                 }, 600);
+                // Load images
+                const images = ['/images/icons/whiteX.svg'];
+                images.forEach(image => {
+                    const img = new Image();
+                    img.src = image;
+                });
             } else {
                 this.setState({
                     loadingText: checkLogin.message,
@@ -73,13 +96,17 @@ class Dashboard extends Component {
         }
     }
 
-    selectOrganization(org) {
-        this.setState({
-            user: {
-                ...user,
-                lastOrganization: org.id,
-            },
-        });
+    async selectOrganization(org) {
+        const response = await sendData('/dashboard/selectorg', {orgID: org.id});
+        if (response.status === 'success') {
+            this.setState({
+                user: {
+                    ...this.state.user,
+                    lastOrganization: org.id,
+                },
+                organization: response.organization,
+            });
+        }
     }
 
 
@@ -150,10 +177,59 @@ class Dashboard extends Component {
     }
 
     joinOrg() {
-        this.customAlert('Cannot join organizations yet. Please try again later.', false);
+        this.setState({
+            joinOrgOpen: true,
+        });
     }
     createOrg() {
-        this.customAlert('Cannot create organizations yet. Please try again later.', false);
+        this.setState({
+            createOrgOpen: !this.state.createOrgOpen,
+        });
+    }
+    changeCreateOrgName(value) {
+        this.setState({
+            createOrgName: value,
+        });
+    }
+    addChip(value) {
+        const chips = this.state.chips;
+        chips.push(value);
+        const result = [...new Set(chips)];
+        this.setState({
+            chips: result,
+        });
+    }
+    changeEmailList() {}
+    
+    async submitCreateOrg() {
+        const { createOrgName, chips } = this.state;
+        if (createOrgName.length < 1) return this.customAlert('Please enter a name for you organization!', false);
+        const response = await sendData('/dashboard/createorg', {orgName: createOrgName, invite: chips});
+        if (response && response.status === 'success') {
+            const org = {id: response.orgID, title: createOrgName}
+            this.setState({
+                createOrgOpen: false,
+                user: {
+                    ...user,
+                    organizations: [...this.state.user.organizations, org],
+                    lastOrganization: org.id,
+                }
+            });
+        } else {
+            this.customAlert('An error occurred, please try again later.', false);
+        }
+    }
+
+    toggleUserSidebar() {
+        this.setState({
+            userSideBar: !this.state.userSideBar,
+        });
+    }
+
+    toggleOrgSidebar() {
+        this.setState({
+            orgSideBar: !this.state.orgSideBar,
+        });
     }
 
     render() {
@@ -173,9 +249,52 @@ class Dashboard extends Component {
                     })}
                 </div>
 
-                <Dropdown items={this.state.user.organizations} current={this.state.user.lastOrganization} width={'30vh'} selectItem={this.selectOrganization} bgClr={'#424242'} />
+                {/* Org Side bar */}
+                {this.state.user.organizations.length > 0 ? (<div className={'sideBar ' + this.state.orgSideBar}>
+                    <img alt='close sidebar' src='/images/icons/x.svg' onClick={this.toggleOrgSidebar} style={{position: 'absolute', top: '2vh', right: '2vh', zIndex: 1, cursor: 'pointer'}} />
+                    {this.state.organization.title}
+                </div>) : null}
+                
+                {/* User Side bar */}
+                <div className='hamIcon' onClick={this.toggleUserSidebar}>
+                    <img alt='open user settings' src='/images/icons/ham.svg' style={{height: '100%', width: '100%'}} />
+                </div>
+                <div className={'user right sideBar ' + this.state.userSideBar}>
+                    <img alt='close sidebar' src='/images/icons/x.svg' onClick={this.toggleUserSidebar} style={{position: 'absolute', top: '2vh', right: '2vh', zIndex: 1, cursor: 'pointer'}} />
+                    <div onClick={this.logout} style={{position: 'absolute', top: '2vh', left: '2vh', padding: '1vh 3vh', backgroundColor: 'grey', borderRadius: '1vh', cursor: 'pointer'}}>Logout</div>
+                </div>
 
-                <div onClick={this.logout} style={{position: 'absolute', top: '2vh', right: '2vh', padding: '1vh 3vh', backgroundColor: 'grey', borderRadius: '1vh', cursor: 'pointer'}}>Logout</div>
+                {/* Create/Join menus */}
+                <div className={'createOrg ' + this.state.createOrgOpen}>
+                    <h1>Create an Organization</h1>
+                    <img className='closeCreateOrg' alt='close menu for create org' src='/images/icons/whiteX.svg' onClick={this.createOrg} />
+
+                    <div className='field'>
+                        <h3>Organization name</h3>
+                        <Input onInput={this.changeCreateOrgName} className="createOrgName" placeholder={"Type here..."} type="text" width={'100%'} />
+                    </div>
+
+                    <div className='field'>
+                        <h3>Invite users/employees<span> - List emails here. More users can always be invited later</span></h3>
+                        <Input onInput={this.changeEmailList} className="createOrgName"  width={'100%'} placeholder={"name@example.com, ..."} type="chip" addChip={this.addChip} />
+                        <div className='chips'>
+                            {this.state.chips.map((chip) => {
+                                return (
+                                    <div key={chip} className='chip'>
+                                        <img alt='remove chip' src='/images/icons/whiteX.svg' />
+                                        <h3>{chip}</h3>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+
+                    <div className='submitCreateOrg'>
+                        <div onClick={this.submitCreateOrg} className='btn'>Create Organization</div>
+                    </div>
+                </div>
+
+                <Dropdown items={this.state.user.organizations} current={this.state.user.lastOrganization} width={'30vh'} selectItem={this.selectOrganization} actionFunc={this.createOrg} bgClr={'#424242'} />
 
                 {/* Body */}
                 <div className='body'>

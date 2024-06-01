@@ -12,6 +12,7 @@ class Input extends Component {
         this.showPassword = this.showPassword.bind(this);
         this.focus = this.focus.bind(this);
         this.blur = this.blur.bind(this);
+        this.addChip = this.addChip.bind(this);
 
     }
 
@@ -23,8 +24,23 @@ class Input extends Component {
     }
     keySubmit(e) {
         if (e.key === 'Enter') {
-            this.props.enter();
+            if (this.props.enter) {
+                this.props.enter();
+            }
         }
+        if (e.key === ' ' || e.key === 'Enter' || e.key === ',') {
+            if (this.props.type === 'chip') {
+                this.addChip(this.state.value);
+            }
+        }
+    }
+    addChip(value) {
+        let result = value.replace(/[ ,]/g, '');
+        this.setState({
+            value: '',
+        });
+        if (result.length < 1) return;
+        this.props.addChip(result);
     }
 
     onInput(e) {
@@ -41,10 +57,11 @@ class Input extends Component {
     }
 
     render() {
+        const type = this.props.type === 'chip' ? 'text' : this.state.showPassword ? "text" : this.props.type;
         return (
             <div className={'Input ' + this.props.className} style={{width: this.props.width}}>
                 <div className='placeholder' style={{color: this.state.value.length > 0 ? "transparent" : "#868686"}}>{this.props.placeholder}</div>
-                <input type={this.state.showPassword ? "text" : this.props.type} onInput={this.onInput} value={this.state.value} onFocus={this.focus} onBlur={this.blur} />
+                <input type={type} onInput={this.onInput} value={this.state.value} onFocus={this.focus} onBlur={this.blur} />
                 <img onClick={this.showPassword} className='eye' style={{display: this.props.type === "password" ? "block" : "none"}} src='/images/icons/eye.svg' alt='eye'/>
             </div>
         );
@@ -52,3 +69,15 @@ class Input extends Component {
 }
 
 export default Input;
+
+// For Chips
+// <div className='chips'>
+//     {this.state.chips.map((chip) => {
+//         return (
+//             <div key={chip} className='chip'>
+//                 <img alt='remove chip' src='/images/icons/x.svg' />
+//                 <h3>{chip}</h3>
+//             </div>
+//         )
+//     })}
+// </div> 

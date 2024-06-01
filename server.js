@@ -32,6 +32,7 @@ app.get('/signup', (req, res) => {
 
 // DB models
 const User = require('./models/User');
+const Org = require('./models/Org');
 
 // Routes
 const dashboardRoute = require('./routes/dashboard');
@@ -49,6 +50,10 @@ app.post('/auth', authToken, async (req, res) => {
         if (!user) {
             return res.json({status: 'error', message: 'Bad authentication! Redirecting...'})
         };
+        if (user.lastOrganization) {
+            organization = await Org.findById(user.lastOrganization)
+        }
+
 
         // Hide crucial information to not send client
         user.password = '';
@@ -56,6 +61,7 @@ app.post('/auth', authToken, async (req, res) => {
         res.json({
             status: 'success',
             user,
+            organization,
         });
     } catch(err) {
         console.error(err);

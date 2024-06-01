@@ -71,3 +71,69 @@
     font-weight: 900;
     cursor: pointer;
 }   
+
+/* Create/Join menus */
+.createOrg {
+    position: absolute;
+    top: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    min-height: 60vh;
+    max-height: 90vh;
+    overflow: hidden;
+    width: 70vw;
+    border-radius: 4vh;
+    background-color: #3a3a3a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vh 10vh;
+    color: white;
+    z-index: 1;
+    display: none;
+}
+.createOrg.true {
+    display: flex;
+}
+.createOrg > .field {
+    width: 100%;
+    margin: 2vh;
+    color: rgb(255, 255, 255);
+    font-size: 1.5vh;
+}
+.createOrg > .closeCreateOrg {
+    position: absolute;
+    top: 1vh;
+    right: 1vh;
+    height: 4vh;
+    cursor: pointer;
+}
+.createOrg > .submitCreateOrg {
+    margin-top: 2vh;
+}
+.createOrg > .submitCreateOrg > .btn {
+    background-color: #426293;
+}
+.createOrg > .field > h3 {
+    font-weight: 200;
+    margin-bottom: 1vh;
+}
+.createOrg > .field > h3 > span {
+    font-size: 1.4vh;
+    font-weight: bold;
+    color: grey;
+}
+.createOrg h1 {
+    font-size: 3vh;
+}
+.createOrg > .field > .Input {
+    background-color: rgb(70, 70, 70);
+}
+
+.hamIcon {
+    position: absolute;
+    top: 3vh;
+    right: 3vh;
+    height: 3vh;
+    cursor: pointer;
+}
