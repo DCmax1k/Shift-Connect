@@ -124,20 +124,22 @@
     height: 100vh;
     width: 600px;
     background-color: rgb(30, 30, 30);
-    right: 100vw;
+    left: 0;
     top: 0;
-    transform: translateX(0);
+    transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 2;
 }
 .sideBar.right {
-    left: 100vw;
-}
-.sideBar.true {
+    right: 0;
+    left: unset;
     transform: translateX(100%);
 }
+.sideBar.true {
+    transform: translateX(0);
+}
 .sideBar.right.true {
-    transform: translateX(-100%);
+    transform: translateX(0);
 }
 .sideBar.user {
     background-color: #353535;
@@ -162,15 +164,12 @@
     height: 100%;
     display: flex;
     color: white;
-    position: absolute;
-    left: 0;
-    top: 0;
     padding-top: 10vh;
 
-    transition: left 0.3s ease;
+    transition: transform 0.3s ease;
 }
 .Switch > .slide.false {
-    left: -100%;
+    transform: translateX(-50%);
 }
 
 .Login {
