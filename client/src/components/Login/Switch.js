@@ -13,6 +13,12 @@ class Switch extends Component {
          this.customAlert = this.customAlert.bind(this);
     }
 
+    componentDidMount() {
+        // Mobile bug fix
+        this.switchPage();
+        setTimeout(this.switchPage, 100);
+    }
+
     switchPage() {
         this.setState({
             login: !this.state.login,

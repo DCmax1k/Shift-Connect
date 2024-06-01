@@ -306,8 +306,8 @@ class Dashboard extends Component {
                 <Dropdown items={this.state.user.organizations} current={this.state.user.lastOrganization} width={'30vh'} selectItem={this.selectOrganization} actionFunc={this.createOrg} bgClr={'#424242'} />
 
                 {/* Body */}
+                {this.state.user.organizations.length < 1 ? (
                 <div className='body'>
-                    {this.state.user.organizations.length < 1 ? (
                     <div className='middle'>
                         <div className='btn' onClick={this.joinOrg}>
                             Join Organization
@@ -316,13 +316,19 @@ class Dashboard extends Component {
                         <div className='btn' onClick={this.createOrg}>
                             Create Organization
                         </div>
-                    </div>) : (
-                    <div>
-
-                    </div>)}
-                    
-                    
+                    </div>
                 </div>
+
+                ) : (
+
+                <div className='body'>
+
+                    {/* Cog Org settings */}
+                    {/* <img alt='organization settings' src='/images/icons/cog.svg' /> */}
+
+                </div>
+
+                )}
             </div>
         ) : (
             <Loading loadingText={this.state.loadingText} ref={this.loadingRef} />
