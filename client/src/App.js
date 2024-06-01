@@ -10,7 +10,7 @@ import Dashboard from './components/Dashboard';
 
 function App() {
   const {href, host} = window.location;
-  if (href.includes('http:') && !host.includes('localhost')) {
+  if (href.includes('http:') && host.includes('crew')) {
     window.location.href = 'https://' + host;
   }
   return (

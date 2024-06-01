@@ -107,7 +107,7 @@ class Index extends Component {
 
                 {/* Side bar */}
                 <div className={'sideBar ' + this.state.sideBar}>
-                    <img alt='close sidebar' src='/images/icons/x.svg' onClick={this.toggleSidebar} style={{position: 'absolute', top: '2vh', right: '2vh', zIndex: 1, cursor: 'pointer'}} />
+                    <img alt='close sidebar' src='/images/icons/x.svg' onClick={this.toggleSidebar} style={{position: 'absolute', top: '2vh', right: '2vh', zIndex: 2, cursor: 'pointer'}} />
                     <Switch customAlert={this.customAlert} />
                 </div>
 
