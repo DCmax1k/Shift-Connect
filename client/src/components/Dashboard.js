@@ -7,11 +7,11 @@ import Input from './Login/Input';
 
 const user = {
 	_id: 3409233,
-	fullname: 'Dylan',
+	fullname: 'Dylan Caldwell',
 	username: 'DCmax1k',
 	password: 'password1234',
-	//organizations: [ {id: 23234, title: 'Walmart', }, {id: 234234, title: 'Pulp', }, {id: 234534, title: 'Pine Tree Corner LLC', }, ],
-	organizations: [  ],
+	organizations: [ {id: 23234, title: 'Walmart', }, {id: 234234, title: 'Pulp', }, {id: 234534, title: 'Pine Tree Corner LLC', }, ],
+	//organizations: [  ],
 	lastOrganization: 234534,
 };
 
@@ -97,15 +97,19 @@ class Dashboard extends Component {
     }
 
     async selectOrganization(org) {
+        this.setState({
+            user: {
+                ...this.state.user,
+                lastOrganization: org.id,
+            }
+        });
         const response = await sendData('/dashboard/selectorg', {orgID: org.id});
-        if (response.status === 'success') {
+        if (response && response.status === 'success') {
             this.setState({
-                user: {
-                    ...this.state.user,
-                    lastOrganization: org.id,
-                },
                 organization: response.organization,
             });
+        } else {
+            this.customAlert('Error connecting to server. Please try again later.', false);
         }
     }
 
@@ -261,22 +265,27 @@ class Dashboard extends Component {
                 </div>
                 <div className={'user right sideBar ' + this.state.userSideBar}>
                     <img alt='close sidebar' src='/images/icons/x.svg' onClick={this.toggleUserSidebar} style={{position: 'absolute', top: '2vh', right: '2vh', zIndex: 1, cursor: 'pointer'}} />
-                    <div onClick={this.logout} style={{position: 'absolute', top: '2vh', left: '2vh', padding: '1vh 3vh', backgroundColor: 'grey', borderRadius: '1vh', cursor: 'pointer'}}>Logout</div>
+
+                    <div className='userName'>
+                        <img alt='Crew logo' src='/images/logoNoBg.svg' />
+                        <h2>{this.state.user.fullname}</h2>
+                    </div>
+                    <div onClick={this.logout} className='btn logout'>Logout</div>
                 </div>
 
-                {/* Create/Join menus */}
+                {/* Create/Join org menus */}
                 <div className={'createOrg ' + this.state.createOrgOpen}>
                     <h1>Create an Organization</h1>
                     <img className='closeCreateOrg' alt='close menu for create org' src='/images/icons/whiteX.svg' onClick={this.createOrg} />
 
                     <div className='field'>
                         <h3>Organization name</h3>
-                        <Input onInput={this.changeCreateOrgName} className="createOrgName" placeholder={"Type here..."} type="text" width={'100%'} />
+                        <Input onInput={this.changeCreateOrgName} className="createOrgName" placeholder={"Type here..."} type="text" width={'100%'} height={'6vh'} />
                     </div>
 
                     <div className='field'>
                         <h3>Invite users/employees<span> - List emails here. More users can always be invited later</span></h3>
-                        <Input onInput={this.changeEmailList} className="createOrgName"  width={'100%'} placeholder={"name@example.com, ..."} type="chip" addChip={this.addChip} />
+                        <Input onInput={this.changeEmailList} className="createOrgName"  width={'100%'}  height={'6vh'} placeholder={"name@example.com, ..."} type="chip" addChip={this.addChip} />
                         <div className='chips'>
                             {this.state.chips.map((chip) => {
                                 return (
