@@ -14,7 +14,7 @@
     clip-path: polygon(0 0, 100% 0%, 100% 6vh, 0 6vh);
 }
 .Dropdown.visible {
-    clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0%, 100% 110%, 0 110%);
 }
 .dropitem {
     height: 6vh;
@@ -27,6 +27,12 @@
     font-weight: 900;
     padding-left: 2vh;
     font-size: 2vh;
+
+    transition: box-shadow 0.3s ease;
+    box-shadow: -0.3vh 0.5vh 0.3vh 0.1vh rgba(0, 0, 0, 0);
+}
+.Dropdown.visible > .dropitem {
+    box-shadow: -0.3vh 0.5vh 0.3vh 0.1vh rgba(0, 0, 0, 0.503);
 }
 .arrow {
     height: 1vh;

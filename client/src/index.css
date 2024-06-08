@@ -6,6 +6,11 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .App {
     font-family: "Inter", sans-serif;
     background-color: #282828;

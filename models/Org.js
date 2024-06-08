@@ -9,14 +9,17 @@ const OrgSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    employees: {
+    users: {
         type: [Object],
     },
     invited: {
         type: [Object],
     },
     admins: {
-        type: [String],
+        type: [Object],
+    },
+    schedule: {
+        type: Object,
     },
     shifts: {
         type: [Object],

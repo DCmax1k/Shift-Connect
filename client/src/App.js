@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 import "./components/stylesheets/Index.css";
 import "./components/stylesheets/Dashboard.css";
+import "./components/stylesheets/Editor.css";
 import "./components/widgets/widgets.css";
 
 import Index from './components/Index';

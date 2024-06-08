@@ -80,9 +80,9 @@
     transform: translateX(-50%);
     min-height: 60vh;
     max-height: 90vh;
-    overflow: hidden;
     width: 70vw;
-    border-radius: 2vh;
+    overflow: hidden;
+    border-radius: 1cqi;
     background-color: #2C2C2C;
     box-shadow: 0.5vh 0.5vh 2vh rgba(0, 0, 0, 0.547);
     display: flex;
@@ -90,8 +90,17 @@
     align-items: center;
     padding: 2vh 10vh;
     color: white;
-    z-index: 1;
+    z-index: 3;
     transition: top 0.5s cubic-bezier(.39,1.39,.66,1);
+}
+.createOrg > h1 {
+    font-size: 2vh;
+}
+@media screen and (max-width: 900px) {
+    .createOrg {
+        padding: 5vh 2vh;
+        width: 95vw;
+    }
 }
 .createOrg.true {
     top: 10vh;
@@ -124,11 +133,15 @@
     font-weight: bold;
     color: grey;
 }
-.createOrg h1 {
-    font-size: 3vh;
-}
 .createOrg > .field > .Input {
     background-color: rgb(70, 70, 70);
+    height: 4vh !important;
+}
+.createOrg > .field > .Input > .placeholder {
+    font-size: 1.7vh;
+}
+.createOrg > .field > .Input > input {
+    font-size: 1.7vh;
 }
 
 .hamIcon {

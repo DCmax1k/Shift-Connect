@@ -1,0 +1,217 @@
+.Editor {
+    width: 100%;
+}
+
+.table {
+    margin-top: 2vh;
+    border: 1px solid #5C5C5C;
+    border-radius: 1vh;
+    overflow: hidden;
+    width: 100%;
+}
+table {
+    color: white;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    padding-bottom: 10vh;
+}
+@media screen and (max-width: 1430px) {
+    table {
+        width: 1500px;
+    }
+    .table {
+        overflow-x: scroll;
+    }
+}
+
+th, td {
+    width: 12.5%;
+    height: 90px;
+    border: 1px solid #5C5C5C;
+}
+
+td > .fillSpace {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fillSpace.userName {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 2vh;
+}
+.fillSpace.userName > h1 {
+    font-size: 2vh;
+    line-height: 2vh;
+}
+.fillSpace.userName > p {
+    color: #969696;
+    font-weight: bold;
+    font-size: 1.5vh;
+}
+
+.bubbleFill {
+    height: calc(100% - 1vh);
+    width: calc(100% - 1vh);
+    border-radius: 2vh;
+    font-size: 1.3vh;
+}
+
+.bubbleFill.notAvail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #654747;
+    font-size: 1.5vh;
+}
+
+.shift.bubbleFill {
+    background-color: #545775;
+    padding-left: 1vh;
+    word-wrap: break-word;
+    cursor: pointer;
+}
+.shift.bubbleFill > p.timeCont {
+    font-size: 1vh;
+    margin-top: 1vh;
+    margin-bottom: 0.3vh;
+}
+.shift.bubbleFill > p.timeCont > .time {
+    font-size: 1.5vh;
+    font-weight: bold;
+}
+.shift.bubbleFill > .location {
+    font-size: 1.2vh;
+    font-weight: bold;
+}
+.shift.bubbleFill > .notes {
+    font-size: 1vh;
+    width: 100%;
+    padding-right: 0.1vh;
+    color: #AFAFAF;
+}
+
+td > .fillSpace > .addShift {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1E1E1E;
+    color: #676767;
+    font-weight: 300;
+    cursor: pointer;
+}
+td > .fillSpace > .addShift > p {
+    font-weight: 500;
+    color: #7d7d7d;
+    font-size: 1.5vh;
+}
+td > .fillSpace > .addShift > img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 2vh;
+}
+td > .fillSpace > .addShift > .timeCont {
+    font-size: 1.1vh;
+}
+td > .fillSpace > .addShift > .timeCont > .time {
+    font-size: 1.3vh;
+}
+
+.options {
+    margin-top: 2vh;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    position: relative;
+    max-width: 100vw;
+    height: 13vh;
+    margin-bottom: calc(6vh - 13vh);
+}
+
+.option {
+    margin-right: 1vh;
+    background-color: #424242;
+    border-radius: 1vh;
+    color: white;
+    position: relative;
+    height: 6vh;
+    flex-shrink: 0;
+}
+
+.option.date {
+    width: 15vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 1vh;
+    cursor: pointer;
+}
+.option.date > p {
+    font-size: 2vh;
+    font-weight: 900;
+}
+.option.date > span {
+    font-size: 1.5vh;
+}
+.option.date > img {
+    height: 2vh;
+    position: absolute;
+    top: 50%;
+    right: 1vh;
+    transform: translateY(-50%);
+}
+
+.option.switchWeek {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25vh;
+}
+.option.switchWeek > div {
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.option.switchWeek > div.arrow {
+    width: 3vh;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    
+}
+.option.switchWeek > div.arrow.left {
+    transform: translateY(-50%) rotate(180deg);
+    left: 1vh;
+}
+.option.switchWeek > div.arrow.right {
+    right: 1vh;
+}
+.option.switchWeek > div.arrow > img {
+    height: 1.5vh;
+}
+.option.switchWeek > div.weekText {
+    text-align: center;
+    font-size: 2vh;
+    font-weight: 900;
+}
+
+.option.addShift {
+    background-color: #426293;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 3vh;
+    font-size: 2vh;
+    font-weight: 900;
+    cursor: pointer;
+}

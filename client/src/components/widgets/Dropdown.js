@@ -16,7 +16,12 @@ class Dropdown extends Component {
         if (!items || items.length < 1) return [];
         const currentItem = items.find(item => item.id === current);
         const remainingItems = items.filter(item => item.id !== current);
-        return [currentItem, ...remainingItems, {id: 'actionFunc', title: 'Create an organization'}];
+        if (this.props.action) {
+            return [currentItem, ...remainingItems, {id: 'actionFunc', title: this.props.actionText}];
+        } else {
+            return [currentItem, ...remainingItems];
+        }
+        
     }
 
     selectItem(itm) {
@@ -42,8 +47,8 @@ class Dropdown extends Component {
     render() {
         const { items, current } = this.props;
         return (
-            <div className='DropdownCont' style={{width: this.props.width}}>
-                <div className={`Dropdown ${this.state.open ? 'visible' : 'hidden'}`}>
+            <div className={`DropdownCont ${this.props.c}`} style={{width: this.props.width}}>
+                <div className={`Dropdown ${this.state.open ? 'visible' : 'hidden'}`} style={{zIndex: this.props.z ? this.props.z : 1}}>
                     {this.filterCurrentFirst(items, current).map((itm, i) => (
                         <div key={itm.id} className='dropitem' onClick={() => this.selectItem(itm)} style={itm.id === 'actionFunc' ? {border: '0.5vh solid #424242', backgroundColor: '#282828'} : {backgroundColor: this.props.bgClr}}>
                             {itm.title}
@@ -51,7 +56,7 @@ class Dropdown extends Component {
                     ))}
                     {!items || items.length < 1 ? (
                         <div className='dropitem' style={{backgroundColor: this.props.bgClr}}>
-                            No organizations yet
+                            {this.props.emptyPlaceholder}
                         </div>
                     ) : null}
                     <img alt='arrow' className='arrow' src='/images/carrotArrow.svg' style={{transform: this.state.open ? 'translateY(-50%) rotate(180deg)' : 'translateY(-50%) rotate(0)'}}  />

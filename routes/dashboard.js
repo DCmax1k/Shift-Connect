@@ -34,12 +34,28 @@ router.post('/createorg', authToken, async (req, res) => {
         });
         const joinCode = generateCode();
 
+        // Add current user to org
+        const userInOrg = {
+            userID: user._id,
+            fullname: user.fullname,
+            notifications: [],
+            jobTitle: 'Creator',
+            availability: [{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: false },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },], // sun mon ...
+            shifts: [],
+        }
+
+        const userAsAdmin = {
+            userID: user._id,
+            lastView: 'editor', // editor, view
+        }
+
         const org = new Org({
             title: orgName,
             invited,
-            employees: [],
-            admins: [user._id],
+            users: [userInOrg],
+            admins: [userAsAdmin],
             joinCode,
+            schedule: {},
             shfits: [],
         });
         await org.save();

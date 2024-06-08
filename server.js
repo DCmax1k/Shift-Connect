@@ -57,11 +57,14 @@ app.post('/auth', authToken, async (req, res) => {
 
         // Hide crucial information to not send client
         user.password = '';
+
+        const date = new Date();
         
         res.json({
             status: 'success',
             user,
             organization,
+            date,
         });
     } catch(err) {
         console.error(err);
