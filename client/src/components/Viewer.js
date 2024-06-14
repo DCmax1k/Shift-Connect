@@ -19,7 +19,7 @@ class Viewer extends Component {
         return (
             <div className='Viewer'>
                 
-                <Dropdown action={false} emptyPlaceholder={""} actionText={""} items={[{id: 'editor', title: 'Schedule Editor'}, {id: 'view', title: 'View Schedule'}]} current={this.props.lastView} width={'30vh'} selectItem={this.selectView} actionFunc={null} bgClr={'#424242'} z={1} c={'option'} />
+                <Dropdown action={false} emptyPlaceholder={""} actionText={""} items={[{id: 'editor', title: 'Schedule Editor'}, {id: 'view', title: 'View Schedule'}]} current={this.props.lastView} width={'30vh'} selectItem={this.selectView} actionFunc={null} bgClr={'#424242'} z={1} c={''} />
             </div>
         );
     }

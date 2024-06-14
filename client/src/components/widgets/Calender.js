@@ -127,12 +127,13 @@ class Calender extends Component {
                 <div className='datesCont'>
                     <div className='dayCont weekDay'>Sun</div><div className='dayCont weekDay'>Mon</div><div className='dayCont weekDay'>Tue</div><div className='dayCont weekDay'>Wed</div><div className='dayCont weekDay'>Thu</div><div className='dayCont weekDay'>Fri</div><div className='dayCont weekDay'>Sat</div>
                     {allDates.map((d, i) => {
-
+                        const dateKey = d.getTime();
                         const selected = this.compareDates(d, this.state.selectedDate);
                         const partOfThisMonth = d.getMonth() === this.state.date.getMonth();
+                        let uniqueKey = `date-${dateKey}-user-${i}`;
 
                         return (
-                            <div className={'dayCont ' + (selected ? 'selected ' : '') + (partOfThisMonth ? '' : 'grey') }>
+                            <div key={uniqueKey} className={'dayCont ' + (selected ? 'selected ' : '') + (partOfThisMonth ? '' : 'grey') }>
                                 <div onClick={() => this.setSelectedDate(d)} className='day'>
                                     {d.getDate()}
                                 </div>

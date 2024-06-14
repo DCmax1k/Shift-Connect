@@ -8,6 +8,8 @@
     border-radius: 1vh;
     width: 100%;
     overflow-y: visible;
+    overflow-x: auto;
+    min-height: 80vh;
 
 }
 table {
@@ -15,7 +17,6 @@ table {
     border-collapse: collapse;
     table-layout: fixed;
     width: 100%;
-
     
 }
 @media screen and (max-width: 1430px) {
@@ -29,7 +30,7 @@ table {
 
 th, td {
     width: 12.5%;
-    height: 90px;
+    height: 10vh;
     border: 1px solid #5C5C5C;
 }
 
@@ -61,6 +62,7 @@ td > .fillSpace {
     border-radius: 2vh;
     font-size: 1.3vh;
     position: relative;
+    transition: background-color 0.3s ease;
 }
 
 .bubbleFill.notAvail {
@@ -72,6 +74,12 @@ td > .fillSpace {
     background-color: rgb(48, 26, 26);
     cursor: pointer;
 }
+.bubbleFill.animate {
+    background-color: rgb(82, 82, 82) !important;
+}
+.bubbleFill.animate.notAvail {
+    background-color: rgb(181, 101, 101) !important;
+}
 
 .shift.bubbleFill {
     background-color: #545775;
@@ -81,6 +89,7 @@ td > .fillSpace {
     position: relative;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 .shift.bubbleFill > p.timeCont {
     font-size: 1vh;
     margin-top: 1vh;
@@ -184,6 +193,7 @@ td > .fillSpace > .addShift > .timeCont > .time {
 .options {
     margin-top: 2vh;
     display: flex;
+    align-items: flex-end;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
@@ -191,6 +201,8 @@ td > .fillSpace > .addShift > .timeCont > .time {
     max-width: 100vw;
     height: 13vh;
     margin-bottom: calc(6vh - 13vh);
+
+    transform: rotateX(180deg);
 }
 
 .option {
@@ -202,6 +214,8 @@ td > .fillSpace > .addShift > .timeCont > .time {
     height: 6vh;
     flex-shrink: 0;
     user-select: none;
+
+    transform: rotateX(180deg);
 }
 
 .option.date {
@@ -359,7 +373,7 @@ td > .fillSpace > .addShift > .timeCont > .time {
     padding: 1vh;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.5s ease, transform 0.2s ease;
     z-index: 1;
     border: 1px solid rgb(90, 90, 90);
     cursor: default;
@@ -368,6 +382,16 @@ td > .fillSpace > .addShift > .timeCont > .time {
     pointer-events: all;
     opacity: 1;
     transform: translate(-50%, 0);
+}
+.RecentShifts.firstRow {
+    top: 0;
+    bottom: unset;
+    transform: translate(-50%, -8vh);
+}
+.RecentShifts.secondRow {
+    top: 0;
+    bottom: unset;
+    transform: translate(-50%, -18vh);
 }
 .RecentShifts > p {
     color: #E0E0E0;

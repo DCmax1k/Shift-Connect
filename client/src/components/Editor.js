@@ -275,7 +275,11 @@ class Editor extends Component {
         this.props.addShift(shiftData);
     }
 
-    showRecentShifts(v = '') {
+    async sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async showRecentShifts(v = '') {
         this.setState({
             showRecentShiftsFor: v,
         });
@@ -460,7 +464,7 @@ class Editor extends Component {
                                 scheduleID = shiftsToday[0].scheduleID
                             }
                             
-                            let visible = false;
+                            let visible = false; // Show recent shifts to add widget
                             let uniqueKey = `date-${dateKey}-user-${u.userID}`;
                             if (this.state.showRecentShiftsFor === uniqueKey) {
                                 visible = true;
@@ -472,7 +476,7 @@ class Editor extends Component {
                             <td key={uniqueKey}>
                                 <div className='fillSpace'>
                                     {shiftToday ? (
-                                        <div onClick={() => this.toggleActiveSchedule(scheduleID)} className={'shift bubbleFill ' + (active ? 'active' : '')}>
+                                        <div onClick={() => this.toggleActiveSchedule(scheduleID)} className={'shift bubbleFill ' + (active ? 'active ' : ' ')}>
                                             <div title='User marked this date not available!' className={'conflict ' + (available ? '' : 'notAvail')}> <img alt='warning conflict' src='/images/icons/conflict.svg' /> </div>
                                             <p className='timeCont'><span className='time'>{defaultShiftStart[0]}</span><span className='amOrPm'>{defaultShiftStart[1]}</span> - <span className='time'>{defaultShiftEnd[0]}</span><span className='amOrPm'>{defaultShiftEnd[1]}</span></p>
                                             <p className='location'>{shiftsToday[0].location ? shiftsToday[0].location : 'Notes'}</p>
@@ -484,16 +488,16 @@ class Editor extends Component {
                                             </div>
                                         </div>
                                     ) : available ? (
-                                        <div onClick={() => {if (!visible) {this.showRecentShifts(uniqueKey)}}} className='addShift bubbleFill'>
+                                        <div onClick={() => {if (!visible) {this.showRecentShifts(uniqueKey)}}} className={'addShift bubbleFill ' + (visible ? 'animate' : '')}>
                                             <img alt='add shift' src='/images/icons/plus.svg' />
                                             <p>Available</p>
                                             <p className='timeCont'><span className='time'>{availStart[0]}</span><span className='amOrPm'>{availStart[1]}</span> - <span className='time'>{availEnd[0]}</span><span className='amOrPm'>{availEnd[1]}</span></p>
-                                            <RecentShifts shifts={this.props.organization.shifts} visible={visible} toggleAddShiftMenu={this.toggleAddShiftMenu} showRecentShifts={this.showRecentShifts} date={date} u={u} scheduleShift={this.scheduleShift} />
+                                            <RecentShifts shifts={this.props.organization.shifts} visible={visible} toggleAddShiftMenu={this.toggleAddShiftMenu} showRecentShifts={this.showRecentShifts} date={date} u={u} scheduleShift={this.scheduleShift} row={userIndex} />
                                         </div>
                                     ) : (
-                                        <div onClick={() => {if (!visible) {this.showRecentShifts(uniqueKey)}}} className='bubbleFill notAvail'>
+                                        <div onClick={() => {if (!visible) {this.showRecentShifts(uniqueKey)}}} className={'bubbleFill notAvail ' + (visible ? 'animate' : '')}>
                                             Not available
-                                            <RecentShifts shifts={this.props.organization.shifts} visible={visible} toggleAddShiftMenu={this.toggleAddShiftMenu} showRecentShifts={this.showRecentShifts} date={date} u={u} scheduleShift={this.scheduleShift} />
+                                            <RecentShifts shifts={this.props.organization.shifts} visible={visible} toggleAddShiftMenu={this.toggleAddShiftMenu} showRecentShifts={this.showRecentShifts} date={date} u={u} scheduleShift={this.scheduleShift} row={userIndex} />
                                         </div>
                                     )}
                                 </div>

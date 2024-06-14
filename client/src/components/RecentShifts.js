@@ -48,7 +48,7 @@ class RecentShifts extends Component {
     render() {
         const { shifts } = this.props;
         return (
-            <div className={'RecentShifts ' + this.props.visible}>
+            <div className={'RecentShifts ' + this.props.visible + ' ' + (this.props.row === 0 ? 'firstRow' : this.props.row === 1 ? 'secondRow' : '')}>
                 <img onClick={this.closeMenu} className='closeRecentShifts' alt='close recent shifts' src='/images/icons/x.svg' />
                 <p>{shifts.length > 0 ? 'Recent shifts' : 'No recent shifts'}</p>
                 {this.capLength(shifts, 5).map((shift, i) => {

@@ -13,6 +13,7 @@ class Input extends Component {
         this.focus = this.focus.bind(this);
         this.blur = this.blur.bind(this);
         this.addChip = this.addChip.bind(this);
+        this.setValue = this.setValue.bind(this);
 
     }
 
@@ -65,6 +66,12 @@ class Input extends Component {
     showPassword() {
         this.setState({
             showPassword: !this.state.showPassword,
+        });
+    }
+
+    setValue(value) {
+        this.setState({
+            value,
         });
     }
 
