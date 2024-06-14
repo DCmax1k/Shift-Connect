@@ -112,6 +112,7 @@
     z-index: 3;
     font-size: 1.6vh;
     box-shadow: -0.4vh 0.4vh 0.5vh 0.1vh rgba(0, 0, 0, 0.508);
+    user-select: none;
 
     transform: translateY(20%);
     opacity: 0;
@@ -169,14 +170,17 @@
 }
 .Calender > .datesCont > .dayCont.selected > .day {
     color: black;
-    background-color: white;
+    background-color: white !important;
 }
 .Calender > .datesCont > .dayCont.grey > .day {
-    color: #5E5E5E;
+    color: #737373;
 }
 .Calender > .datesCont > .dayCont.weekDay {
     height: 3vh;
     font-weight: bold;
+}
+.Calender > .datesCont > .dayCont > .day:hover {
+    background-color: #565656;
 }
 .Calender > .datesCont > .dayCont > .day {
     cursor: pointer;

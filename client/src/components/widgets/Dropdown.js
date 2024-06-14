@@ -14,8 +14,8 @@ class Dropdown extends Component {
 
     filterCurrentFirst(items, current) {
         if (!items || items.length < 1) return [];
-        const currentItem = items.find(item => item.id == current);
-        const remainingItems = items.filter(item => item.id !== current);
+        const currentItem = items.find(item => JSON.stringify(item.id) === JSON.stringify(current));
+        const remainingItems = items.filter(item => JSON.stringify(item.id) !== JSON.stringify(current));
         if (this.props.action) {
             const result = [currentItem, ...remainingItems, {id: 'actionFunc', title: this.props.actionText}];
             return result.filter(itm => itm !== undefined)
@@ -28,7 +28,8 @@ class Dropdown extends Component {
 
     selectItem(itm) {
         if (itm.id === 'actionFunc') return this.actionFunc();
-        if (!this.state.open || itm.id === this.props.current) return this.toggle();
+
+        if (!this.state.open || JSON.stringify(itm.id) === JSON.stringify(this.props.current)) return this.toggle();
         this.props.selectItem(itm);
         this.toggle();
     }
@@ -54,7 +55,6 @@ class Dropdown extends Component {
             <div className={`DropdownCont ${this.props.c}`} style={{width: this.props.width}}>
                 <div className={`Dropdown ${this.state.open ? 'visible' : 'hidden'}`} style={{zIndex: this.props.z ? this.props.z : 1}}>
                     {filteredItems.map((itm, i) => {
-                        console.log(itm);
                         return (
                         <div key={itm.id} className='dropitem' onClick={() => this.selectItem(itm)} style={itm.id === 'actionFunc' ? {border: '0.5vh solid #424242', backgroundColor: '#282828'} : {backgroundColor: this.props.bgClr}}>
                             {itm.title}

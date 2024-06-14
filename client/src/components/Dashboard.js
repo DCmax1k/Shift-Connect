@@ -118,7 +118,6 @@ class Dashboard extends Component {
             //const checkLogin = {user, status: 'success', organization: org, date: new Date()};
             if (checkLogin.status === 'success') {
                 const { user, organization, date } = checkLogin;
-                console.log('date got ', date);
                 this.setState({
                     user,
                     organization,
@@ -297,7 +296,6 @@ class Dashboard extends Component {
         const response = await sendData('/dashboard/createorg', {orgName: createOrgName, invite: chips});
         if (response && response.status === 'success') {
             const org = {id: response.orgID, title: createOrgName}
-            const organization = response.organization;
             const userOrgs = this.state.user.organizations;
             userOrgs.push(org);
             this.setState({
@@ -305,10 +303,9 @@ class Dashboard extends Component {
                 user: {
                     ...user,
                     organizations: userOrgs,
-                    lastOrganization: org.id,
                 },
-                organization,
             });
+            this.selectOrganization(org);
         } else {
             this.customAlert('An error occurred, please try again later.', false);
         }
@@ -326,9 +323,19 @@ class Dashboard extends Component {
         });
     }
 
-    selectView(view) {
+    selectView(viewID) {
+        const organizationAdmin = this.state.organization.admins;
+        const result = organizationAdmin.map(usr => {
+            if (JSON.stringify(usr.userID) === JSON.stringify(this.state.user._id)) {
+                return {userID: usr.userID, lastView: viewID}
+            } else return usr;
+        });
         this.setState({
-            view,
+            view: viewID,
+            organization: {
+                ...this.state.organization,
+                admins: result,
+            }
         });
     }
 
@@ -413,7 +420,6 @@ class Dashboard extends Component {
     async unscheduleShift(id) {
         const organization = this.state.organization;
         const schedule = organization.schedule.filter(sch => {
-            console.log(sch.id, id);
             return sch.id !== id;
         });
         this.setState({
@@ -453,11 +459,12 @@ class Dashboard extends Component {
         let adminUser = null;
         let orgUser = {};
         let lastView = this.state.view; // view, editor
+        let orgLoaded = false;
 
         if (this.state.organization && this.state.organization._id) {
             // Check if admin
             this.state.organization.admins.forEach(admin => {
-                if (admin.userID == this.state.user._id) {
+                if (JSON.stringify(admin.userID) === JSON.stringify(this.state.user._id)) {
                     isAdmin = true;
                     adminUser = admin;
                 }
@@ -466,7 +473,7 @@ class Dashboard extends Component {
 
             // Get org user info
             this.state.organization.users.forEach(u => {
-                if (u.userID == this.state.user._id) orgUser = u;
+                if (JSON.stringify(u.userID) === JSON.stringify(this.state.user._id)) orgUser = u;
                 return;
             });
             if (!orgUser || !orgUser.userID) {
@@ -479,7 +486,10 @@ class Dashboard extends Component {
                     }
                 }
             }
+
             
+            // Show organization
+            orgLoaded = true;
         }
 
         return this.state.loggedIn ? (
@@ -498,7 +508,7 @@ class Dashboard extends Component {
                 </div>
 
                 {/* Org Side bar */}
-                {this.state.user.organizations.length > 0 ? (<div className={'sideBar ' + this.state.orgSideBar}>
+                {orgLoaded ? (<div className={'sideBar ' + this.state.orgSideBar}>
                     <img alt='close sidebar' src='/images/icons/x.svg' onClick={this.toggleOrgSidebar} style={{position: 'absolute', top: '2vh', right: '2vh', zIndex: 1, cursor: 'pointer'}} />
                     {this.state.organization.title}
                 </div>) : null}

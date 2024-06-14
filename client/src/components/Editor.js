@@ -123,6 +123,7 @@ class Editor extends Component {
     }
 
     convertMilitaryToRegular(militaryTime) {
+        if (!militaryTime) return ['undefined', 'undefined'];
         const timeStr = militaryTime.toString().padStart(4, '0');
         const hours = parseInt(timeStr.slice(0, -2), 10);
         const minutes = timeStr.slice(-2);
@@ -138,6 +139,7 @@ class Editor extends Component {
     }
 
     selectView(item) {
+        console.log('fine here ', item.id);
         this.props.selectView(item.id);
     }
 
