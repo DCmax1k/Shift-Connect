@@ -5,6 +5,7 @@ import Dropdown from './widgets/Dropdown';
 import Input from './Login/Input';
 import Editor from './Editor';
 import Viewer from './Viewer';
+import Calender from './widgets/Calender';
 
 
 const user = {
@@ -20,22 +21,38 @@ const org = {
 	title: 'Pine Tree Corner',
 	_id: 982374,
 	invited: [  {email: 'dylan@gmail.com', jobTitle: 'Manager', availability: {monday: {startTime: 700, endTime: 1700, available: true }, }, shifts: [234234, 234234]}  ],
-	users: [  {userID: 3409233,fullname: 'Dylan Caldwell Junior Cousins', notifications: [],  jobTitle: 'Manager', availability: [{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: false },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },], shifts: [908234]}, {userID: 3409233,fullname: 'Joe mama', notifications: [],  jobTitle: 'Field Worker', availability: [{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: false },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: false },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },], shifts: [908234]}  ],
+	users: [  {userID: 340933,fullname: 'Dylan Caldwell', notifications: [],  jobTitle: 'Manager', availability: [{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: false },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },], shifts: [908234]}, {userID: 3409233,fullname: 'Joe mama', notifications: [],  jobTitle: 'Field Worker', availability: [{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: false },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: false },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },], shifts: [908234]}  ],
 	admins: [ {
         userID: 3409233,
         lastView: 'editor',
     } ],
 	joinCode: '9fg8x',
-	schedule: {},
+	schedule: [
+        {
+            id: 90823,
+			userID: 340933,
+			date: new Date(),
+			shiftID: "908234",
+        },
+    ],
 	shifts:  // pre made shifts
 	[
 		{
 			title: 'Morning Shift',
-			id: 908234,
-			date: new Date(),
+			id: "908234",
 			timeStart: 700,
 			timeEnd: 1700,
 			location: 'Main Office',
+			repeat: 'weekly',
+			saved: true, // is saved. If not saved, its just in db for suggestions to admin
+            notes: 'Park on the right side of the driveway facing street of the brown house, on the right side of the driveway facing street of the brown house',
+		},
+        {
+			title: 'Evening Shift',
+			id: "9048234",
+			timeStart: 1000,
+			timeEnd: 1700,
+			location: 'Farm',
 			repeat: 'weekly',
 			saved: true, // is saved. If not saved, its just in db for suggestions to admin
             notes: 'Park on the right side of the driveway facing street of the brown house, on the right side of the driveway facing street of the brown house',
@@ -60,13 +77,17 @@ class Dashboard extends Component {
             chips: [],
 
             organization: {},
-            date: null,
-            view: null, // editor, view
+            date: new Date(),
+            view: 'view', // editor, view
 
             orgSideBar: false,
             userSideBar: false,
+
+            calenderActive: false,
         };
         this.loadingRef = React.createRef();
+        this.editorRef = React.createRef();
+        this.calenderRef = React.createRef();
 
         this.customAlert = this.customAlert.bind(this);
         this.applyDecay = this.applyDecay.bind(this);
@@ -81,16 +102,23 @@ class Dashboard extends Component {
         this.toggleOrgSidebar = this.toggleOrgSidebar.bind(this);
         this.compareDates = this.compareDates.bind(this);
         this.selectView = this.selectView.bind(this);
+        this.scheduleShift = this.scheduleShift.bind(this);
+        this.addShift = this.addShift.bind(this);
+        this.unscheduleShift = this.unscheduleShift.bind(this);
+        this.toggleCalender = this.toggleCalender.bind(this);
+        this.setDate = this.setDate.bind(this);
+        this.setSelectedDate = this.setSelectedDate.bind(this);
         
 
     }
 
     async componentDidMount() {
         try {
-            //const checkLogin = await sendData('/auth', {});
-            const checkLogin = {user, status: 'success', organization: org, date: new Date()};
+            const checkLogin = await sendData('/auth', {});
+            //const checkLogin = {user, status: 'success', organization: org, date: new Date()};
             if (checkLogin.status === 'success') {
                 const { user, organization, date } = checkLogin;
+                console.log('date got ', date);
                 this.setState({
                     user,
                     organization,
@@ -127,23 +155,6 @@ class Dashboard extends Component {
 
         } catch(err) {
             console.error(err);
-        }
-    }
-
-    async selectOrganization(org) {
-        this.setState({
-            user: {
-                ...this.state.user,
-                lastOrganization: org.id,
-            }
-        });
-        const response = await sendData('/dashboard/selectorg', {orgID: org.id});
-        if (response && response.status === 'success') {
-            this.setState({
-                organization: response.organization,
-            });
-        } else {
-            this.customAlert('Error connecting to server. Please try again later.', false);
         }
     }
 
@@ -262,6 +273,23 @@ class Dashboard extends Component {
         });
     }
     changeEmailList() {}
+
+    async selectOrganization(org) {
+        this.setState({
+            user: {
+                ...this.state.user,
+                lastOrganization: org.id,
+            }
+        });
+        const response = await sendData('/dashboard/selectorg', {orgID: org.id});
+        if (response && response.status === 'success') {
+            this.setState({
+                organization: response.organization,
+            });
+        } else {
+            this.customAlert('Error connecting to server. Please try again later.', false);
+        }
+    }
     
     async submitCreateOrg() {
         const { createOrgName, chips } = this.state;
@@ -269,13 +297,17 @@ class Dashboard extends Component {
         const response = await sendData('/dashboard/createorg', {orgName: createOrgName, invite: chips});
         if (response && response.status === 'success') {
             const org = {id: response.orgID, title: createOrgName}
+            const organization = response.organization;
+            const userOrgs = this.state.user.organizations;
+            userOrgs.push(org);
             this.setState({
                 createOrgOpen: false,
                 user: {
                     ...user,
-                    organizations: [...this.state.user.organizations, org],
+                    organizations: userOrgs,
                     lastOrganization: org.id,
-                }
+                },
+                organization,
             });
         } else {
             this.customAlert('An error occurred, please try again later.', false);
@@ -301,8 +333,119 @@ class Dashboard extends Component {
     }
 
     //EDIT ORGANIZATION
-    addShift(shift) {
+    async addShift(shiftData) {
+        const tempId = Math.floor(Math.random() * 100000);
+        const {title, timeStart, timeEnd, location, repeat, color, notes} = shiftData;
+        const shift = {
+            title: title,
+            id: tempId,
+            timeStart: timeStart,
+            timeEnd: timeEnd,
+            location: location,
+            repeat: repeat,
+            color: color,
+            notes: notes,
+		}
+        const org = this.state.organization;
+        org.shifts.push(shift);
+        this.setState({
+            organization: org,
+        });
+        const response = await sendData('/dashboard/addshift', shiftData);
+        if (response && response.status === 'success') {
+            const createdShift = response.shift;
+            const updatedShifts = org.shifts.map(sft => {
+                if (sft.id === tempId) {
+                    return createdShift;
+                } else {
+                    return sft;
+                }
+            });
+            org.shifts = updatedShifts;
+            this.setState({
+                organization: org,
+            })
+        } else {
+            this.customAlert(response ? response.message : 'error', false);
+        }
+    }
 
+    async scheduleShift(orguserID, date, shift) {
+        let foundUser = false;
+        const organization = this.state.organization;
+        organization.users = organization.users.map(orguser => {
+            if (orguser.userID === orguserID) {
+                foundUser = true;
+                orguser.shifts.push(shift.id);
+                return orguser;
+            } else {
+                return orguser;
+            }
+        });
+        if (!foundUser) {
+            return this.customAlert('User not found in organization, client side.', false);
+        }
+        // Add shift to org schedule
+        const tempId = Math.floor(Math.random() * 100000);
+        organization.schedule.push({id: tempId, userID: orguserID, date, shiftID: shift.id});
+        
+        this.setState({
+            organization,
+        });
+        const response = await sendData('/dashboard/scheduleshift', { orgID: this.state.organization._id, shiftID: shift.id, userID: orguserID, date, });
+        if (response && response.status === 'success') {
+            const createdData = response.data;
+            const updatedSchedule = organization.schedule.map(sft => {
+                if (sft.id === tempId) {
+                    return createdData;
+                } else {
+                    return sft;
+                }
+            });
+            organization.schedule = updatedSchedule;
+            this.setState({
+                organization,
+            });
+        } else {
+            this.customAlert(response ? response.message : 'Error adding shift to schedule', false);
+        }
+    }
+    async unscheduleShift(id) {
+        const organization = this.state.organization;
+        const schedule = organization.schedule.filter(sch => {
+            console.log(sch.id, id);
+            return sch.id !== id;
+        });
+        this.setState({
+            organization: {
+                ...organization,
+                schedule,
+            }
+        });
+
+        const response = await sendData('/dashboard/unscheduleshift', {orgID: organization._id, scheduleID: id,});
+        if (response && response.status === 'success') {
+
+        } else {
+            this.customAlert(response ? response.message : 'Error removing shift from the schedule.', false);
+        }
+    }
+
+    toggleCalender() {
+        this.setState({
+            calenderActive: !this.state.calenderActive,
+        })
+    }
+
+    setDate(date) {
+        this.setState({
+            date,
+        });
+        this.editorRef.current.setDate(date);
+    }
+
+    setSelectedDate(date) {
+        this.calenderRef.current.setSelectedDate(date);
     }
 
     render() {
@@ -314,7 +457,7 @@ class Dashboard extends Component {
         if (this.state.organization && this.state.organization._id) {
             // Check if admin
             this.state.organization.admins.forEach(admin => {
-                if (admin.userID === this.state.user._id) {
+                if (admin.userID == this.state.user._id) {
                     isAdmin = true;
                     adminUser = admin;
                 }
@@ -323,14 +466,14 @@ class Dashboard extends Component {
 
             // Get org user info
             this.state.organization.users.forEach(u => {
-                if (u.userID === this.state.user._id) orgUser = u;
+                if (u.userID == this.state.user._id) orgUser = u;
                 return;
             });
             if (!orgUser || !orgUser.userID) {
                 this.customAlert('An error occured getting user info from organization!', false);
             } else {
                 // Correct lastView
-                if (lastView === null) {
+                if (lastView === 'view') {
                     if (isAdmin) {
                         lastView = adminUser.lastView;
                     }
@@ -372,7 +515,11 @@ class Dashboard extends Component {
                         <h2>{this.state.user.fullname}</h2>
                     </div>
                     <div onClick={this.logout} className='btn logout'>Logout</div>
+                    <p>© 2024 Crew Dylan Caldwell</p>
                 </div>
+
+                {/* Calender */}
+                <Calender ref={this.calenderRef} active={this.state.calenderActive} setDate={this.setDate} />
 
                 {/* Create/Join org menus */}
                 <div className={'createOrg ' + this.state.createOrgOpen}>
@@ -426,7 +573,7 @@ class Dashboard extends Component {
                     
                     {/* Two different screens here. Schedule editor and Display view */}
                     {lastView === 'editor' ? (
-                        <Editor selectView={this.selectView} user={this.state.user} organization={this.state.organization} date={this.state.date} compareDates={this.compareDates} lastView={lastView} />
+                        <Editor ref={this.editorRef} setSelectedDate={this.setSelectedDate} selectView={this.selectView} user={this.state.user} organization={this.state.organization} date={this.state.date} compareDates={this.compareDates} lastView={lastView} addShift={this.addShift} scheduleShift={this.scheduleShift} customAlert={this.customAlert} unscheduleShift={this.unscheduleShift} toggleCalender={this.toggleCalender} />
                     )
                     :   <Viewer selectView={this.selectView} user={this.state.user} organization={this.state.organization} date={this.state.date} compareDates={this.compareDates} lastView={lastView} />
                     }

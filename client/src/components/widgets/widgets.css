@@ -1,4 +1,4 @@
-
+/* Dropdown */
 .DropdownCont {
     height: 6vh;
     overflow-y: visible;
@@ -40,4 +40,151 @@
     position: absolute;
     top: 3vh;
     right: 1vh;
+}
+
+/* Time Input */
+.TimeInput {
+    display: flex;
+    height: 4vh;
+}
+
+.TimeInput > .actualTime {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 2vh;
+    font-weight: bold;
+}
+.TimeInput > .actualTime > .timeInput {
+    outline: none;
+    border: none;
+    background-color: #323232;
+    border-radius: 0.5vh;
+    height: 100%;
+    width: 5vh;
+    font-size: 2vh;
+    color: white;
+    font-weight: bold;
+    margin: 1vh;
+    text-align: center;
+}
+.TimeInput > .actualTime > .timeInput.hour {
+    width: 4vh;
+}
+
+.TimeInput > .ampm {
+    height: 100%;
+    width: 10vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.TimeInput > .ampm > div {
+    height: 80%;
+    width: 45%;
+    background-color: #3232327c;
+    color: rgba(255, 255, 255, 0.516);
+    font-size: 2vh;
+    font-weight: 500;
+    border-radius: 1vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.TimeInput > .ampm > div.true {
+    background-color: #545775;
+    color: white;
+}
+
+/* Calender */
+.Calender {
+    height: fit-content;
+    padding: 1vh;
+    position: fixed;
+    top: 18vh;
+    left: 2vh;
+    background-color: #393939;
+    border-radius: 2vh;
+    color: white;
+    z-index: 3;
+    font-size: 1.6vh;
+    box-shadow: -0.4vh 0.4vh 0.5vh 0.1vh rgba(0, 0, 0, 0.508);
+
+    transform: translateY(20%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.Calender.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+}
+.Calender > .header {
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1vh;
+}
+.Calender > .header > .backAndNext {
+    height: 100%;
+    display: flex;
+    width: 9vh;
+    justify-content: space-between;
+}
+.Calender > .header > .backAndNext > div {
+    width: 4vh;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Calender > .header > .backAndNext > div > img {
+    height: 1.4vh;
+}
+.Calender > .header > .backAndNext > div.back > img {
+    transform: rotate(90deg);
+}
+.Calender > .header > .backAndNext > div.next > img {
+    transform: rotate(270deg);
+
+}
+.Calender > .datesCont {
+    display: flex;
+    flex-wrap: wrap;
+    width: 35vh;
+}
+.Calender > .datesCont > .dayCont {
+    width: 5vh;
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Calender > .datesCont > .dayCont.selected > .day {
+    color: black;
+    background-color: white;
+}
+.Calender > .datesCont > .dayCont.grey > .day {
+    color: #5E5E5E;
+}
+.Calender > .datesCont > .dayCont.weekDay {
+    height: 3vh;
+    font-weight: bold;
+}
+.Calender > .datesCont > .dayCont > .day {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65%;
+    width: 65%;
+    border-radius: 50%;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }

@@ -14,12 +14,14 @@ class Dropdown extends Component {
 
     filterCurrentFirst(items, current) {
         if (!items || items.length < 1) return [];
-        const currentItem = items.find(item => item.id === current);
+        const currentItem = items.find(item => item.id == current);
         const remainingItems = items.filter(item => item.id !== current);
         if (this.props.action) {
-            return [currentItem, ...remainingItems, {id: 'actionFunc', title: this.props.actionText}];
+            const result = [currentItem, ...remainingItems, {id: 'actionFunc', title: this.props.actionText}];
+            return result.filter(itm => itm !== undefined)
         } else {
-            return [currentItem, ...remainingItems];
+            const result = [currentItem, ...remainingItems];
+            return result.filter(itm => itm !== undefined)
         }
         
     }
@@ -46,14 +48,18 @@ class Dropdown extends Component {
 
     render() {
         const { items, current } = this.props;
+        const filteredItems = this.filterCurrentFirst(items, current);
+        
         return (
             <div className={`DropdownCont ${this.props.c}`} style={{width: this.props.width}}>
                 <div className={`Dropdown ${this.state.open ? 'visible' : 'hidden'}`} style={{zIndex: this.props.z ? this.props.z : 1}}>
-                    {this.filterCurrentFirst(items, current).map((itm, i) => (
+                    {filteredItems.map((itm, i) => {
+                        console.log(itm);
+                        return (
                         <div key={itm.id} className='dropitem' onClick={() => this.selectItem(itm)} style={itm.id === 'actionFunc' ? {border: '0.5vh solid #424242', backgroundColor: '#282828'} : {backgroundColor: this.props.bgClr}}>
                             {itm.title}
                         </div>
-                    ))}
+                    )})}
                     {!items || items.length < 1 ? (
                         <div className='dropitem' style={{backgroundColor: this.props.bgClr}}>
                             {this.props.emptyPlaceholder}

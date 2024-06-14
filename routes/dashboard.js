@@ -18,6 +18,15 @@ function generateCode(length = 5) {
     
     return code;
 }
+function generateId() {
+    const charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+    for (let i = 0; i < 9; i++) {
+        const randomIndex = Math.floor(Math.random() * charSet.length);
+        id += charSet[randomIndex];
+    }
+    return id;
+}
 
 router.post('/createorg', authToken, async (req, res) => {
     try {
@@ -40,7 +49,7 @@ router.post('/createorg', authToken, async (req, res) => {
             fullname: user.fullname,
             notifications: [],
             jobTitle: 'Creator',
-            availability: [{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: false },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },], // sun mon ...
+            availability: [{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },{startTime: 700, endTime: 1700, available: true },], // sun mon ...
             shifts: [],
         }
 
@@ -67,6 +76,7 @@ router.post('/createorg', authToken, async (req, res) => {
         res.json({
             status: 'success',
             orgID: org._id,
+            organization: org,
         });
 
 
@@ -105,6 +115,106 @@ router.post('/selectorg', authToken, async (req, res) => {
         console.error(err);
     }
     
+});
+
+router.post('/addshift', authToken, async (req, res) => {
+    try {
+        const user = await User.findOne({_id: req.userId});
+        const { orgID, title, timeStart, timeEnd, location, repeat, notes, color } = req.body;
+        const organization = await Org.findById(orgID);
+        if (!user || !organization) {
+            return res.json({status: 'error', message: 'Bad authentication! Redirecting...'})
+        };
+        const shift = {
+            title: title,
+            id: generateId(),
+            timeStart: timeStart,
+            timeEnd: timeEnd,
+            location: location,
+            repeat: repeat,
+            color: color,
+            notes: notes,
+		}
+        // Add shift to org shifts
+        organization.shifts.push(shift);
+        await organization.save();
+
+        res.json({
+            status: 'success',
+            shift,
+        });
+
+    } catch(err) {
+        console.error(err);
+    }
+});
+router.post('/scheduleshift', authToken, async (req, res) => {
+    try {
+        const user = await User.findOne({_id: req.userId});
+        const { orgID, shiftID, userID, date } = req.body;
+        const organization = await Org.findById(orgID);
+        if (!user || !organization) {
+            return res.json({status: 'error', message: 'Bad authentication! Redirecting...'})
+        };
+        const shift = organization.shifts.find(shift => shift.id === shiftID);
+        // Add shift id to orguser
+        let foundUser = false;
+        organization.users = organization.users.map(orguser => {
+            if (orguser.userID == userID) {
+                foundUser = true;
+                orguser.shifts.push(shift.id);
+                return orguser;
+            } else {
+                return orguser;
+            }
+        });
+        if (!foundUser) {
+            return res.json({
+                status: 'error',
+                message: 'User not found in organization!',
+            });
+        }
+        // Add to org schedule
+        const schID = generateId();
+        const data = {
+            id: schID,
+            userID,
+            date,
+            shiftID: shift.id
+        }
+        organization.schedule.push(data);
+
+        await organization.save();
+        res.json({
+            status: 'success',
+            data,
+        });
+    } catch(err) {
+        console.error(err);
+    }
+});
+router.post('/unscheduleshift', authToken, async (req, res) => {
+    try {
+        const user = await User.findOne({_id: req.userId});
+        const { orgID, scheduleID } = req.body;
+        const organization = await Org.findById(orgID);
+        if (!user || !organization) {
+            return res.json({status: 'error', message: 'Bad authentication! Redirecting...'})
+        };
+
+        const schedule = organization.schedule.filter(sch => {
+            return sch.id !== scheduleID;
+        });
+        organization.schedule = schedule;
+
+        await organization.save();
+        res.json({
+            status: 'success',
+        });
+
+    } catch(err) {
+        console.error(err);
+    }
 });
 
 function authToken(req, res, next) {

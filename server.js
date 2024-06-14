@@ -50,6 +50,7 @@ app.post('/auth', authToken, async (req, res) => {
         if (!user) {
             return res.json({status: 'error', message: 'Bad authentication! Redirecting...'})
         };
+        let organization = null;
         if (user.lastOrganization) {
             organization = await Org.findById(user.lastOrganization)
         }

@@ -186,3 +186,7 @@
 .Login > h1 {
     font-size: 3vh;
 }
+
+.Index .Input {
+    margin-bottom: 1vh;
+}

@@ -19,7 +19,7 @@ const OrgSchema = new mongoose.Schema({
         type: [Object],
     },
     schedule: {
-        type: Object,
+        type: [Object],
     },
     shifts: {
         type: [Object],

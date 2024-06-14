@@ -83,7 +83,7 @@
     width: 70vw;
     overflow: hidden;
     border-radius: 1cqi;
-    background-color: #2C2C2C;
+    background-color: #3f3f3f;
     box-shadow: 0.5vh 0.5vh 2vh rgba(0, 0, 0, 0.547);
     display: flex;
     flex-direction: column;
@@ -157,6 +157,7 @@
     justify-content: flex-start;
     align-items: center;
     padding: 10vh 3vh;
+    z-index: 4;
 }
 .user.sideBar > .logout {
     background-color: #737373;
