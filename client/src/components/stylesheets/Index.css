@@ -1,3 +1,27 @@
+.maintMsg {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 8vh;
+    background-color: #FFF4CD;
+    color: #DA7600;
+    font-size: 3vh;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(100%);
+}
+.maintMsg.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
 .Index {
     height: 100vh;
     width: 100vw;
