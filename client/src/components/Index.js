@@ -10,7 +10,7 @@ class Index extends Component {
             alerts: [],
             sideBar: false,
 
-            betaMsg: false,
+            
         }
 
         this.toggleSidebar = this.toggleSidebar.bind(this);
@@ -31,12 +31,7 @@ class Index extends Component {
             console.error(err);
         }
 
-        // Beta msg
-        setTimeout(() => {
-            this.setState({
-                betaMsg: true,
-            })
-        }, 1000)
+        
     }
 
     customAlert(message, good) {
@@ -107,10 +102,6 @@ class Index extends Component {
                     })}
                 </div>
 
-                {/* Beta Message */}
-                <div className={'maintMsg ' + (this.state.betaMsg ? 'active' : '')}>
-                    This app is in beta, and is still undergoing development. 
-                </div>
 
                 {/* Title Logo */}
                 <div className='title'>

@@ -84,6 +84,8 @@ class Dashboard extends Component {
             userSideBar: false,
 
             calenderActive: false,
+
+            betaMsg: false,
         };
         this.loadingRef = React.createRef();
         this.editorRef = React.createRef();
@@ -151,6 +153,13 @@ class Dashboard extends Component {
                     window.location.href = '/';
                 }, 2000);
             }
+
+            // Beta msg
+            setTimeout(() => {
+                this.setState({
+                    betaMsg: true,
+                })
+            }, 4000)
 
         } catch(err) {
             console.error(err);
@@ -505,6 +514,11 @@ class Dashboard extends Component {
                         </div>
                         )
                     })}
+                </div>
+
+                {/* Beta Message */}
+                <div className={'maintMsg ' + (this.state.betaMsg ? 'active' : '')}>
+                    This app is in beta, and is still undergoing development. 
                 </div>
 
                 {/* Org Side bar */}
